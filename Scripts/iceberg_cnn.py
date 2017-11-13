@@ -91,7 +91,7 @@ if __name__ == '__main__':
         writer = tf.summary.FileWriter('./graph', graph = sess.graph)
         sess.run(tf.global_variables_initializer())
         labels = labels.eval()
-        for i in range(100):
+        for i in range(2):
             print('Current Epoch: ',i)
             for batch in range(int(n_samples/batch_size)):
                 batch_x = x_band1[batch*batch_size : (1+batch) * batch_size]
@@ -101,10 +101,10 @@ if __name__ == '__main__':
                     train_accuracy = accuracy.eval(feed_dict={x:batch_x,y_:batch_y, keep_prob : 1.0})
                     ls = log_loss(batch_y, output_conv.eval(feed_dict={x:batch_x,y_:batch_y, keep_prob : 1.0}))
                     print('step %d, training accuracy %g, log loss %g' % (i, train_accuracy, ls))
-        save_path = saver.save(sess, 'tmp/')
-        print('Model saved in file: %s' % save_path)
         train_accuracy = accuracy.eval(feed_dict={x:x_band1,y_:labels, keep_prob : 1.0})
-        ls = log_loss(batch_y, output_conv.eval(feed_dict={x:x_band1,y_:labels, keep_prob : 1.0}))
-        print('Final training accuracy %g, log loss %g' % (i, train_accuracy, ls))
+        ls = log_loss(labels, output_conv.eval(feed_dict={x:x_band1,y_:labels, keep_prob : 1.0}))
+        print('Final training accuracy %g, log loss %g' % (train_accuracy, ls))
+        save_path = saver.save(sess, '../tmp/')
+        print('Model saved in file: %s' % save_path)
     writer.close()
     print('End of program...')
