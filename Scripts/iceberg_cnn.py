@@ -80,10 +80,11 @@ if __name__ == '__main__':
             b_fc2 = bias_variable([2])
             output_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
         
-        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels = y_, logits = output_conv))
-        opt = tf.train.AdamOptimizer(.0001).minimize(cross_entropy)
-        correct_prediction = tf.equal(tf.argmax(output_conv,1), tf.argmax(y_,1))
-        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels = y_, logits = output_conv))
+    opt = tf.train.AdamOptimizer(.0001).minimize(cross_entropy)
+    correct_prediction = tf.equal(tf.argmax(output_conv,1), tf.argmax(y_,1))
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    probabilities = tf.nn.softmax(output_conv)
     tf.summary.FileWriterCache.clear()
     saver = tf.train.Saver()
     print('Beginning Session...')
@@ -91,7 +92,7 @@ if __name__ == '__main__':
         writer = tf.summary.FileWriter('./graph', graph = sess.graph)
         sess.run(tf.global_variables_initializer())
         labels = labels.eval()
-        for i in range(2):
+        for i in range(30):
             print('Current Epoch: ',i)
             for batch in range(int(n_samples/batch_size)):
                 batch_x = x_band1[batch*batch_size : (1+batch) * batch_size]
@@ -100,7 +101,9 @@ if __name__ == '__main__':
             if i % debug_step == 0:
                     train_accuracy = accuracy.eval(feed_dict={x:batch_x,y_:batch_y, keep_prob : 1.0})
                     ls = log_loss(batch_y, output_conv.eval(feed_dict={x:batch_x,y_:batch_y, keep_prob : 1.0}))
+                    prob = probabilities.eval(feed_dict={x:batch_x,y_:batch_y, keep_prob : 1.0})
                     print('step %d, training accuracy %g, log loss %g' % (i, train_accuracy, ls))
+                    print('Probabilities of each class: ', prob)
         train_accuracy = accuracy.eval(feed_dict={x:x_band1,y_:labels, keep_prob : 1.0})
         ls = log_loss(labels, output_conv.eval(feed_dict={x:x_band1,y_:labels, keep_prob : 1.0}))
         print('Final training accuracy %g, log loss %g' % (train_accuracy, ls))
