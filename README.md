@@ -38,6 +38,10 @@ x: Input
 
 W: The weight variable for the layer
 
+## Training
+
+![](https://i.imgur.com/iBjFnyj.png)
+
 ## Graph Creation
 
 ### Full model:
