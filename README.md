@@ -45,7 +45,7 @@ W: The weight variable for the layer
 ## Graph Creation
 
 ### Full model:
-<img src="https://media.giphy.com/media/l4EoYHJw7J1mWpT9u/giphy.gif" width="900" height="600">
+![](https://media.giphy.com/media/xUNda23psAEN55g8yQ/giphy.gif)
 
 
 ### Convolution Layer:
