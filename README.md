@@ -11,6 +11,18 @@ pandas for data structuring
 numpy for linear algebra (mostly dealing with matricies)
 sklearn for log loss metrics for this particular competition
 
+## Data
+
+Here the data is represented in flattened 75x75 pixels of radar bands.
+
+### Ship Images:
+
+![](https://i.imgur.com/wmnljrR.png)
+
+### Iceberg Images:
+
+![](https://i.imgur.com/ZrqG4aL.png)
+
 ## Usage
 
 I reccomend using a python virtual environment specifically for use of tensorflow. I am using anaconda with a conda virtual environment
